@@ -83,7 +83,7 @@ Level2行情  QQ：2037696191  Skype：Level2.API
 
 行情接入示：
 
-- [C++]((https://github.com/Level2API/l2-push-go)
+- [Golang]((https://github.com/Level2API/l2-push-go)
 
 
 
