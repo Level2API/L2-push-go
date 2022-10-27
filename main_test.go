@@ -81,3 +81,51 @@ func TestSubscription(t *testing.T) {
 	r.True(rsp3.Code == 1)
 	printlnCurrentSub(`t3`)
 }
+
+// 测试行情推送-并发处理
+func TestTxMsgPushParallel(t *testing.T) {
+	r := require.New(t)
+	ctx := context.TODO()
+
+	client := mustNewProxyClient()
+	defer client.Close()
+
+	//stream.Recv()非线程安全，以下启用1个协程读取消息并写入channel
+	//其他协程读取channel获取消息并处理，1个消息仅发送给其中1个协程
+	newTickStream := func() <-chan *entity.TickRecord {
+		ch := make(chan *entity.TickRecord)
+
+		//启动单协程处理推送消息
+		go func() {
+			defer close(ch)
+
+			tickStream, err := client.NewTickRecordStream(ctx, &entity.Void{})
+			r.NoError(err)
+
+			for {
+				tick, err := tickStream.Recv()
+				if err != nil {
+					fmt.Println(`连接已断开：`, err)
+				}
+
+				ch <- tick
+			}
+		}()
+
+		return ch
+	}
+
+	tickStream := newTickStream()
+
+	//启动多协程从管道获取消息并处理
+	for i := 0; i < 10; i++ {
+		go func() {
+			for tick := range tickStream {
+				fmt.Println(tick)
+			}
+		}()
+	}
+
+	select {}
+
+}
