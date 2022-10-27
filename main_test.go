@@ -106,6 +106,7 @@ func TestTxMsgPushParallel(t *testing.T) {
 				tick, err := tickStream.Recv()
 				if err != nil {
 					fmt.Println(`连接已断开：`, err)
+					return
 				}
 
 				ch <- tick
@@ -127,5 +128,4 @@ func TestTxMsgPushParallel(t *testing.T) {
 	}
 
 	select {}
-
 }
