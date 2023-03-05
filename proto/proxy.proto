@@ -25,6 +25,16 @@ service Proxy{
   //推送股票十档行情行情数据
   rpc NewStockQuoteRecordStream(entity.Void)returns(stream entity.StockQuoteRecord){}
 
+  //推送单支股票逐笔成交行情数据
+  rpc NewSoloTickRecordStream(entity.String)returns(stream entity.TickRecord){}
+  //推送单支股票逐笔委托行情数据
+  rpc NewSoloOrderRecordStream(entity.String)returns(stream entity.OrderRecord){}
+  //推送单支股票委托队列行情数据
+  rpc NewSoloOrderQueueRecordStream(entity.String)returns(stream entity.OrderQueueRecord){}
+  //推送单支股票股票十档行情行情数据
+  rpc NewSoloStockQuoteRecordStream(entity.String)returns(stream entity.StockQuoteRecord){}
+
+
 }
 
 message Rsp{

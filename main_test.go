@@ -26,7 +26,8 @@ func TestTxMsgPush(t *testing.T) {
 	defer client.Close()
 
 	//创建逐笔成交推送流，可调用其他接口创建不同类型的推送流
-	tickStream, err := client.NewTickRecordStream(ctx, &entity.Void{})
+	//tickStream, err := client.NewSoloTickRecordStream(ctx, &entity.String{Value: `600006`})//订阅单支股票
+	tickStream, err := client.NewTickRecordStream(ctx, &entity.Void{}) //订阅全部股票
 	r.NoError(err)
 
 	//读取推送消息

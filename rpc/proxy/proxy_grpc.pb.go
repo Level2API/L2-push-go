@@ -37,6 +37,14 @@ type ProxyClient interface {
 	NewOrderQueueRecordStream(ctx context.Context, in *entity.Void, opts ...grpc.CallOption) (Proxy_NewOrderQueueRecordStreamClient, error)
 	//推送股票十档行情行情数据
 	NewStockQuoteRecordStream(ctx context.Context, in *entity.Void, opts ...grpc.CallOption) (Proxy_NewStockQuoteRecordStreamClient, error)
+	//推送单支股票逐笔成交行情数据
+	NewSoloTickRecordStream(ctx context.Context, in *entity.String, opts ...grpc.CallOption) (Proxy_NewSoloTickRecordStreamClient, error)
+	//推送单支股票逐笔委托行情数据
+	NewSoloOrderRecordStream(ctx context.Context, in *entity.String, opts ...grpc.CallOption) (Proxy_NewSoloOrderRecordStreamClient, error)
+	//推送单支股票委托队列行情数据
+	NewSoloOrderQueueRecordStream(ctx context.Context, in *entity.String, opts ...grpc.CallOption) (Proxy_NewSoloOrderQueueRecordStreamClient, error)
+	//推送单支股票股票十档行情行情数据
+	NewSoloStockQuoteRecordStream(ctx context.Context, in *entity.String, opts ...grpc.CallOption) (Proxy_NewSoloStockQuoteRecordStreamClient, error)
 }
 
 type proxyClient struct {
@@ -202,6 +210,134 @@ func (x *proxyNewStockQuoteRecordStreamClient) Recv() (*entity.StockQuoteRecord,
 	return m, nil
 }
 
+func (c *proxyClient) NewSoloTickRecordStream(ctx context.Context, in *entity.String, opts ...grpc.CallOption) (Proxy_NewSoloTickRecordStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Proxy_ServiceDesc.Streams[4], "/sa.rpc.cli.proxy.Proxy/NewSoloTickRecordStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &proxyNewSoloTickRecordStreamClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Proxy_NewSoloTickRecordStreamClient interface {
+	Recv() (*entity.TickRecord, error)
+	grpc.ClientStream
+}
+
+type proxyNewSoloTickRecordStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *proxyNewSoloTickRecordStreamClient) Recv() (*entity.TickRecord, error) {
+	m := new(entity.TickRecord)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *proxyClient) NewSoloOrderRecordStream(ctx context.Context, in *entity.String, opts ...grpc.CallOption) (Proxy_NewSoloOrderRecordStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Proxy_ServiceDesc.Streams[5], "/sa.rpc.cli.proxy.Proxy/NewSoloOrderRecordStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &proxyNewSoloOrderRecordStreamClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Proxy_NewSoloOrderRecordStreamClient interface {
+	Recv() (*entity.OrderRecord, error)
+	grpc.ClientStream
+}
+
+type proxyNewSoloOrderRecordStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *proxyNewSoloOrderRecordStreamClient) Recv() (*entity.OrderRecord, error) {
+	m := new(entity.OrderRecord)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *proxyClient) NewSoloOrderQueueRecordStream(ctx context.Context, in *entity.String, opts ...grpc.CallOption) (Proxy_NewSoloOrderQueueRecordStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Proxy_ServiceDesc.Streams[6], "/sa.rpc.cli.proxy.Proxy/NewSoloOrderQueueRecordStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &proxyNewSoloOrderQueueRecordStreamClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Proxy_NewSoloOrderQueueRecordStreamClient interface {
+	Recv() (*entity.OrderQueueRecord, error)
+	grpc.ClientStream
+}
+
+type proxyNewSoloOrderQueueRecordStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *proxyNewSoloOrderQueueRecordStreamClient) Recv() (*entity.OrderQueueRecord, error) {
+	m := new(entity.OrderQueueRecord)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *proxyClient) NewSoloStockQuoteRecordStream(ctx context.Context, in *entity.String, opts ...grpc.CallOption) (Proxy_NewSoloStockQuoteRecordStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Proxy_ServiceDesc.Streams[7], "/sa.rpc.cli.proxy.Proxy/NewSoloStockQuoteRecordStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &proxyNewSoloStockQuoteRecordStreamClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Proxy_NewSoloStockQuoteRecordStreamClient interface {
+	Recv() (*entity.StockQuoteRecord, error)
+	grpc.ClientStream
+}
+
+type proxyNewSoloStockQuoteRecordStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *proxyNewSoloStockQuoteRecordStreamClient) Recv() (*entity.StockQuoteRecord, error) {
+	m := new(entity.StockQuoteRecord)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // ProxyServer is the server API for Proxy service.
 // All implementations must embed UnimplementedProxyServer
 // for forward compatibility
@@ -220,6 +356,14 @@ type ProxyServer interface {
 	NewOrderQueueRecordStream(*entity.Void, Proxy_NewOrderQueueRecordStreamServer) error
 	//推送股票十档行情行情数据
 	NewStockQuoteRecordStream(*entity.Void, Proxy_NewStockQuoteRecordStreamServer) error
+	//推送单支股票逐笔成交行情数据
+	NewSoloTickRecordStream(*entity.String, Proxy_NewSoloTickRecordStreamServer) error
+	//推送单支股票逐笔委托行情数据
+	NewSoloOrderRecordStream(*entity.String, Proxy_NewSoloOrderRecordStreamServer) error
+	//推送单支股票委托队列行情数据
+	NewSoloOrderQueueRecordStream(*entity.String, Proxy_NewSoloOrderQueueRecordStreamServer) error
+	//推送单支股票股票十档行情行情数据
+	NewSoloStockQuoteRecordStream(*entity.String, Proxy_NewSoloStockQuoteRecordStreamServer) error
 	mustEmbedUnimplementedProxyServer()
 }
 
@@ -247,6 +391,18 @@ func (UnimplementedProxyServer) NewOrderQueueRecordStream(*entity.Void, Proxy_Ne
 }
 func (UnimplementedProxyServer) NewStockQuoteRecordStream(*entity.Void, Proxy_NewStockQuoteRecordStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method NewStockQuoteRecordStream not implemented")
+}
+func (UnimplementedProxyServer) NewSoloTickRecordStream(*entity.String, Proxy_NewSoloTickRecordStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method NewSoloTickRecordStream not implemented")
+}
+func (UnimplementedProxyServer) NewSoloOrderRecordStream(*entity.String, Proxy_NewSoloOrderRecordStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method NewSoloOrderRecordStream not implemented")
+}
+func (UnimplementedProxyServer) NewSoloOrderQueueRecordStream(*entity.String, Proxy_NewSoloOrderQueueRecordStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method NewSoloOrderQueueRecordStream not implemented")
+}
+func (UnimplementedProxyServer) NewSoloStockQuoteRecordStream(*entity.String, Proxy_NewSoloStockQuoteRecordStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method NewSoloStockQuoteRecordStream not implemented")
 }
 func (UnimplementedProxyServer) mustEmbedUnimplementedProxyServer() {}
 
@@ -399,6 +555,90 @@ func (x *proxyNewStockQuoteRecordStreamServer) Send(m *entity.StockQuoteRecord) 
 	return x.ServerStream.SendMsg(m)
 }
 
+func _Proxy_NewSoloTickRecordStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(entity.String)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ProxyServer).NewSoloTickRecordStream(m, &proxyNewSoloTickRecordStreamServer{stream})
+}
+
+type Proxy_NewSoloTickRecordStreamServer interface {
+	Send(*entity.TickRecord) error
+	grpc.ServerStream
+}
+
+type proxyNewSoloTickRecordStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *proxyNewSoloTickRecordStreamServer) Send(m *entity.TickRecord) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _Proxy_NewSoloOrderRecordStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(entity.String)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ProxyServer).NewSoloOrderRecordStream(m, &proxyNewSoloOrderRecordStreamServer{stream})
+}
+
+type Proxy_NewSoloOrderRecordStreamServer interface {
+	Send(*entity.OrderRecord) error
+	grpc.ServerStream
+}
+
+type proxyNewSoloOrderRecordStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *proxyNewSoloOrderRecordStreamServer) Send(m *entity.OrderRecord) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _Proxy_NewSoloOrderQueueRecordStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(entity.String)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ProxyServer).NewSoloOrderQueueRecordStream(m, &proxyNewSoloOrderQueueRecordStreamServer{stream})
+}
+
+type Proxy_NewSoloOrderQueueRecordStreamServer interface {
+	Send(*entity.OrderQueueRecord) error
+	grpc.ServerStream
+}
+
+type proxyNewSoloOrderQueueRecordStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *proxyNewSoloOrderQueueRecordStreamServer) Send(m *entity.OrderQueueRecord) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _Proxy_NewSoloStockQuoteRecordStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(entity.String)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ProxyServer).NewSoloStockQuoteRecordStream(m, &proxyNewSoloStockQuoteRecordStreamServer{stream})
+}
+
+type Proxy_NewSoloStockQuoteRecordStreamServer interface {
+	Send(*entity.StockQuoteRecord) error
+	grpc.ServerStream
+}
+
+type proxyNewSoloStockQuoteRecordStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *proxyNewSoloStockQuoteRecordStreamServer) Send(m *entity.StockQuoteRecord) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // Proxy_ServiceDesc is the grpc.ServiceDesc for Proxy service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -438,6 +678,26 @@ var Proxy_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "NewStockQuoteRecordStream",
 			Handler:       _Proxy_NewStockQuoteRecordStream_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "NewSoloTickRecordStream",
+			Handler:       _Proxy_NewSoloTickRecordStream_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "NewSoloOrderRecordStream",
+			Handler:       _Proxy_NewSoloOrderRecordStream_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "NewSoloOrderQueueRecordStream",
+			Handler:       _Proxy_NewSoloOrderQueueRecordStream_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "NewSoloStockQuoteRecordStream",
+			Handler:       _Proxy_NewSoloStockQuoteRecordStream_Handler,
 			ServerStreams: true,
 		},
 	},
